@@ -1,7 +1,7 @@
 //JavaScript-C24.2.0 (SpiderMonkey)
 
-var POP_SIZE = 100; //we generate 20 solutions
-var GENERATIONS = 50;
+var POP_SIZE = 20; //we generate 20 solutions
+var GENERATIONS = 1000;
 
 function weighted_choice(items){
   var weight_total = 0;
@@ -80,66 +80,81 @@ function mutate(solution){
 }
 
 
-function valid(solution1,solution2){
+function valid(solution1,solution2,pos){
     var L1=[];
     var R1=[];
     var L2=[];
     var R2=[];
-    var pos = solution1.length/2;
-    for(var i=0; i<2*pos;i++){
-        if(i < pos){
-            L1.push(solution1[i][0]);
-            L1.push(solution1[i][1]);
-            L2.push(solution2[i][0]);
-            L2.push(solution2[i][1]);           
-        }
-        else{
-            R1.push(solution1[i][0]);
-            R1.push(solution1[i][1]);
-            R2.push(solution2[i][0]);
-            R2.push(solution2[i][1]);            
-        }
-    }
+    var size = solution1.length;
 
+    L1 = solution1.slice(0,pos);
+    R1 = solution1.slice(pos);
+    L2 = solution2.slice(0,solution2.length-pos);
+    R2 = solution2.slice(solution2.length-pos);
+    
     var found = false;
-    for(var i=0; i< R2.length; i++){
-        if(R1.indexOf(R2[i])>-1){
+    if(R2.length <= R1.length){
+        for(var i=0; i< R2.length; i++){
+            if(R1.indexOf(R2[i])>-1){
                 found = true;
                 break;
-        }
+            }
+        }      
     }
     
-   for(var i=0; i< L1.length; i++){
-        if(L2.indexOf(L1[i])>-1){
-            found = true;
-            break;
-        }
-   }
+    if(R2.length > R1.length){
+        for(var i=0; i< R1.length; i++){
+            if(R2.indexOf(R1[i])>-1){
+                found = true;
+                break;
+            }
+        }         
+    }    
+    
+    if(L2.length <= L1.length){
+        for(var i=0; i< L2.length; i++){
+            if(L1.indexOf(L2[i])>-1){
+                found = true;
+                break;
+            }
+       }
+    }
+    if(L2.length > L1.length){
+        for(var i=0; i< L1.length; i++){
+            if(L2.indexOf(L1[i])>-1){
+                found = true;
+                break;
+            }
+       }
+    }    
+    
+
     return found;
 }
 
-//print(valid([[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]],[[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]]))
+//print(valid([[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]],[[100,110],[113,111],[128,120],[116,115],[114,113],[124,127],[127,128],[120,126],[149,150],[243,91]],3))
 
-function crossover(solution1,solution2){
+function crossover(solution1,solution2,pos){
     var sch1=[];
     var sch2=[];
-    var pos = solution1.length/2;
-    sch1 = (solution2.slice(pos)).concat(solution1.slice(pos));
-    sch2 = (solution2.slice(0,pos)).concat(solution1.slice(0,pos));
+    sch1 = (solution2.slice(solution2.length-pos)).concat(solution1.slice(pos));
+    //print(sch1);
+    sch2 = (solution2.slice(0,solution2.length-pos)).concat(solution1.slice(0,pos));
+    //print(sch2);
     return [sch1,sch2];
 }
 
-//crossover([[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]],[[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]]);
+//crossover([[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]],[[100,110],[113,111],[128,120],[116,115],[114,113],[124,127],[127,128],[120,126],[149,150],[243,91]],3);
 
 function GA(SE){
     var population = random_population(SE);
     var best_solution =[];
     for(var generation=0;generation<GENERATIONS;generation++){
-        print("========================generation: " + generation + "================================");
+        //print("========================generation: " + generation + "================================");
         var weighted_population = [];
         for(var i=0; i<population.length;i++){
             var fitness_val = fitness(population[i]);
-            if(fitness_val <= 20){
+            if(fitness_val <= 32){
                 var pair =[population[i],1];
             }
             else{
@@ -151,22 +166,24 @@ function GA(SE){
         var population =[];
         for(var i=0; i<population_size/2;i++){
             var solution1 = weighted_choice(weighted_population);
-            print("solution1 is: " + solution1 + " fitness value " + fitness(solution1));
+            //print("solution1 is: " + solution1 + " fitness value " + fitness(solution1));
             var solution2 = weighted_choice(weighted_population);
-            print("solution2 is: " + solution2 + " fitness value " + fitness(solution2));
+            //print("solution2 is: " + solution2 + " fitness value " + fitness(solution2));
             var sch1,ch2;
-            var found = valid(solution1,solution2);
+            var pos = Math.floor(Math.random() * (solution1.length-1));
+            var found = valid(solution1,solution2,pos);
             if(found == false){
-                [sch1,sch2] = crossover(solution1, solution2);
-                print("sch1 is: " + sch1);
-                print("sch2 is: " + sch2);
+                [sch1,sch2] = crossover(solution1, solution2,pos);
+                //print("sch1 is: " + sch1 + " fitness value " + fitness(sch1));
+                //print("sch2 is: " + sch2 + " fitness value " + fitness(sch2));
+                //print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                 population.push(solution1);
                 population.push(solution2);
                 population.push(mutate(sch1));
                 population.push(mutate(sch2));
             }
             else{
-                print("********************no child***********************")
+                //print("********************no child***********************")
                 population.push((solution1));
                 population.push(solution2);
             }
@@ -175,7 +192,7 @@ function GA(SE){
   
         var fittest_solution = population[0];
         var minimum_fitness = fitness(population[0]);
-        for(var i=0; i<population.length;i++){
+        for(var i=0; i<population_size;i++){
             var solution_fitness = fitness(population[i]);
             if(solution_fitness <= minimum_fitness){
                 fittest_solution = population[i];
@@ -183,7 +200,7 @@ function GA(SE){
             }
         }   
         print("Fittest value in Generation:" + generation + " is: " + minimum_fitness);
-        print("the best solution is: "+fittest_solution);
+        //print("the best solution is: "+fittest_solution);
     }
     return 0;
     
