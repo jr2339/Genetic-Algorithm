@@ -1,7 +1,7 @@
 //JavaScript-C24.2.0 (SpiderMonkey)
 
 var POP_SIZE = 20; //we generate 20 solutions
-var GENERATIONS = 1000;
+var GENERATIONS = 100;
 
 function weighted_choice(items){
   var weight_total = 0;
@@ -166,24 +166,24 @@ function GA(SE){
         var population =[];
         for(var i=0; i<population_size/2;i++){
             var solution1 = weighted_choice(weighted_population);
-            //print("solution1 is: " + solution1 + " fitness value " + fitness(solution1));
+            print("solution1 is: " + solution1 + " fitness value " + fitness(solution1));
             var solution2 = weighted_choice(weighted_population);
-            //print("solution2 is: " + solution2 + " fitness value " + fitness(solution2));
+            print("solution2 is: " + solution2 + " fitness value " + fitness(solution2));
             var sch1,ch2;
             var pos = Math.floor(Math.random() * (solution1.length-1));
             var found = valid(solution1,solution2,pos);
             if(found == false){
                 [sch1,sch2] = crossover(solution1, solution2,pos);
-                //print("sch1 is: " + sch1 + " fitness value " + fitness(sch1));
-                //print("sch2 is: " + sch2 + " fitness value " + fitness(sch2));
-                //print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                print("sch1 is: " + sch1 + " fitness value " + fitness(sch1));
+                print("sch2 is: " + sch2 + " fitness value " + fitness(sch2));
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                 population.push(solution1);
                 population.push(solution2);
                 population.push(mutate(sch1));
                 population.push(mutate(sch2));
             }
             else{
-                //print("********************no child***********************")
+                print("********************no child***********************")
                 population.push((solution1));
                 population.push(solution2);
             }
@@ -200,7 +200,7 @@ function GA(SE){
             }
         }   
         print("Fittest value in Generation:" + generation + " is: " + minimum_fitness);
-        //print("the best solution is: "+fittest_solution);
+        print("the best solution is: "+fittest_solution);
     }
     return 0;
     
