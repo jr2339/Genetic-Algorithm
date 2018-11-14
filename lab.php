@@ -134,6 +134,85 @@ function valid(solution1,solution2,pos){
 
 //print(valid([[12,10],[13,11],[8,20],[6,5],[14,3],[4,7],[17,18],[1,16],[19,15],[2,9]],[[100,110],[113,111],[128,120],[116,115],[114,113],[124,127],[127,128],[120,126],[149,150],[243,91]],3))
 
+
+function arraysEqual(arr1, arr2) {
+    if(arr1.length !== arr2.length){
+        return false;
+    }
+    arr1.sort();
+    arr2.sort();
+    for(var i = arr1.length; i--;) {
+        if(arr1[i] !== arr2[i])
+            return false;
+    }
+
+    return true;
+}
+
+//print(arraysEqual([1,2,3,4],[2,1,3,4]))
+
+function pos(solution1,solution2){
+    var array1=[];
+    var array2=[];
+    var position;
+    for(var i=0; i<solution1.length;i++){
+        array1.push(solution1[i][0]);
+        array1.push(solution1[i][1]);
+    }
+    for(var i=0; i<solution2.length;i++){
+        array2.push(solution2[i][0]);
+        array2.push(solution2[i][1]);
+    }
+    var temp1 = array1;
+    var temp2 = array2;
+    var probe1 = arraysEqual(solution1[solution1.length-1],solution2[solution2.length-1]);
+    var probe2 = arraysEqual(solution1[0],solution2[0]);
+    if(probe1 == false && probe2 == false){
+        for(position = array1.length-4;i>-1;position-=2){
+            print("position is : " + position);
+           
+            var temp1 = array1.slice(0,position);
+            print("temp1 is : " + temp1);
+            var temp2 = array2.slice(0,position);
+            print("temp2 is : " + temp2);
+           
+            var check = arraysEqual(temp1,temp2);
+            print("check is : " + check);
+            print("========================================");
+            if(check == true){
+                return position;
+            }
+            else{
+                continue;
+            }
+           
+        }
+    }
+    
+}
+
+var a = [[1,2],[3,4],[5,6],[7,8],[9,10],[11,12],[13,14],[15,16],[17,18],[19,20]]
+
+var b = [[1,2],[3,4],[5,7],[8,9],[10,12],[11,20],[6,19],[13,18],[14,16],[15,17]]
+
+
+print(pos(a,b))
+
+function crossover(solution1,solution2){
+   
+    
+   var result;
+
+    return result;
+}
+
+var solution1 = [[1, 2], [3, 4], [5, 6], [7, 8], [10, 11], [12, 13], [14, 15], [16, 17], [18, 19]]
+var solution2 = [[1, 2], [3, 4], [7, 5], [8, 6], [18, 17], [16, 15], [14, 12], [13, 11], [10, 9]]
+
+//print(crossover(solution1,solution2))
+
+
+
 function crossover(solution1,solution2,pos){
     var sch1=[];
     var sch2=[];
