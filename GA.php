@@ -62,7 +62,7 @@ function mutate(solution){
         solution[n] = solution[m];
         solution[m] = temp;
     }    
-    
+    return solution;
 }    
 
 
@@ -139,11 +139,19 @@ function crossover(solution1,solution2,arr1,arr2){
     
     var ch1 = (solution1.slice(0,pos/2)).concat(solution2.slice(pos/2));
     var ch2 = (solution1.slice(pos/2)).concat(solution2.slice(0,pos/2));
- 
-    //print("solution1 is: " + arr1);
-    //print("ch1 is :      " + ch1);
-    //print("solution2 is: " + arr2);
-    //print("ch2 is :      " + ch2);
+    
+    /*
+    print("solution1 is: " + arr1);
+    print("ch1 is :      " + ch1);
+    for(var i=0; i<ch1.length;i++){
+        print(ch1[i]);
+    }
+    print("solution2 is: " + arr2);
+    print("ch2 is :      " + ch2);
+    for(var i=0; i<ch1.length;i++){
+        print(ch2[i]);
+    }
+    */
     return [ch1,ch2]; 
     
 }    
@@ -171,22 +179,7 @@ function shuffle(array){
 }
 
 
-function best_solution(population){
-    var size = population.length;
-    var fittest_solution = population[0];
-    var minimum_fitness = fitness(population[0]);
-    for(var i=0; i<size; i++){
-        var individual_fitness = fitness(population[i]);
-        if(individual_fitness <= minimum_fitness){
-            fittest_solution = population[i];
-            minimum_fitness = individual_fitness;
-        }
-    }
-    
-    print("Fittest value is: " + minimum_fitness);
-}    
-
-
+  
 
 
 
@@ -236,8 +229,8 @@ function GA(SE){
                 print("------------------------------------------------");
                 temp.push(solution1);
                 temp.push(solution2);
-                temp.push(ch1);
-                temp.push(ch2);
+                temp.push(mutate(ch1));
+                temp.push(mutate(ch2));
             }
             else{
                 print("No child");
