@@ -1,5 +1,5 @@
 var POP_SIZE = 100;
-var GENERATIONS = 20;
+var GENERATIONS = 200;
 
 function combine(SE,Name) {
     var object =[];
@@ -77,7 +77,7 @@ function mutate(solution){
     var mutation_chance = 100;
     var determination = Math.floor(Math.random()*mutation_chance);
     if(determination == 10){
-        print("*******************************Mutate****************");
+        //print("*******************************Mutate****************");
          var m = Math.floor(Math.random() * (solution.length));
          //print(m);
          var n = Math.floor(Math.random() * (solution.length));
@@ -145,7 +145,7 @@ function position(solution1,solution2){
     var temp2 = arr2;
     //print(arr2);
     var pos = 0;
-    for(pos = size-2; pos>=2; pos-=2){
+    for(pos = size-4; pos>=2; pos-=2){
         temp1 = arr1.slice(0,pos);
         temp2 = arr2.slice(0,pos);
         var check = arraysEqual(temp1,temp2);
@@ -168,7 +168,7 @@ var s4 =[["N",14],["R",18],["J",10],["D",4],["E",5],["F",6],["Q",17],["S",19],["
 function crossover(solution1,solution2){
     
     var pos = position(solution1,solution2);
-    print("the position is: " + pos);
+    //print("the position is: " + pos);
     
     var ch1 = (solution1.slice(0,pos)).concat(solution2.slice(pos));
     var ch2 = (solution1.slice(pos)).concat(solution2.slice(0,pos));
@@ -218,7 +218,7 @@ function GA(SE,Name){
     */
     
     for(var generation=0;generation<GENERATIONS;generation++){
-        print("========================generation: " + generation + "================================");
+        //print("========================generation: " + generation + "================================");
         var size = population.length;
         //================================Find the best solution in current population=======================
         var fittest_solution = population[0];
@@ -245,25 +245,25 @@ function GA(SE,Name){
     var temp =[];
         for(var i=0; i<size; i++){
             var solution1 = population[i];
-            print("solution1 " + i + " is: " +solution1 + " fitness value is " + fitness(solution1));
+            //print("solution1 " + i + " is: " +solution1 + " fitness value is " + fitness(solution1));
             var solution2 = population[i+=1];
-            print("solution2 " + i + " is: " +solution2 + " fitness value is " + fitness(solution2));
+            //print("solution2 " + i + " is: " +solution2 + " fitness value is " + fitness(solution2));
             var pos = position(solution1,solution2);
             
             if(pos>0){
                 var ch1,ch2;
                 [ch1,ch2] = crossover(solution1,solution2);
-                print("child 1 is : " + ch1 + " fitness value is " + fitness(ch1));
-                print("child 2 is : " + ch2 + " fitness value is " + fitness(ch2));
-                print("------------------------------------------------");
+                //print("child 1 is : " + ch1 + " fitness value is " + fitness(ch1));
+                //print("child 2 is : " + ch2 + " fitness value is " + fitness(ch2));
+                //print("------------------------------------------------");
                 temp.push(solution1);
                 temp.push(solution2);
                 temp.push(mutate(ch1));
                 temp.push(mutate(ch2));
             }
             else{
-                print("No child");
-                print("------------------------------------------------");
+                //print("No child");
+                //print("------------------------------------------------");
                 temp.push(solution1);
                 temp.push(solution2);
             }
