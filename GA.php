@@ -1,4 +1,4 @@
-var POP_SIZE = 100;
+var POP_SIZE = 50;
 var GENERATIONS = 200;
 
 function combine(SE,Name) {
@@ -75,22 +75,25 @@ function fitness(solution){
 
 function mutate(solution){
     var mutation_chance = 100;
-    var determination = Math.floor(Math.random()*mutation_chance);
-    if(determination == 10){
+    for(var i=0; i<solution.length; i++){
+        var determination = Math.floor(Math.random()*mutation_chance);  
+        if(determination == 10){
         //print("*******************************Mutate****************");
          var m = Math.floor(Math.random() * (solution.length));
          //print(m);
-         var n = Math.floor(Math.random() * (solution.length));
-         //print(n);
-         while(m==n){
+         while(m==i){
              m = Math.floor(Math.random() * (solution.length-1));
-             n = Math.floor(Math.random() * (solution.length-1));
          }
-        var temp = solution[n];
+        var temp = solution[m];
         //print(temp);
-        solution[n] = solution[m];
-        solution[m] = temp;
+        solution[m] = solution[i];
+        solution[i] = temp;
     }  
+        
+        
+    }    
+   
+    
     
     return solution; 
     
